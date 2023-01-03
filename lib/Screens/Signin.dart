@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import '../Controller/authController.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -14,10 +15,15 @@ class _SigninState extends State<Signin> {
   // String password = '';
   // String repeatedPassword = '';
   // String nickname = '';
-  TextEditingController emailController =
-      TextEditingController(); //E-mail Controller
-  TextEditingController passwordController =
-      TextEditingController(); //Password Controller
+  // TextEditingController usernameController =
+  //     TextEditingController(); //usernameController
+  // TextEditingController passwordController =
+  //     TextEditingController(); //Password Controller
+  // TextEditingController repeatedPasswordController =
+  //     TextEditingController(); //repeatedPasswordController
+  // TextEditingController nicknameController =
+  //     TextEditingController(); //nicknameController
+  SigninController signinController = SigninController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +41,7 @@ class _SigninState extends State<Signin> {
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextField(
+                  controller: signinController.usernameController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'UserName',
@@ -61,6 +68,7 @@ class _SigninState extends State<Signin> {
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextField(
+                  controller: signinController.passwordController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Password',
@@ -87,6 +95,7 @@ class _SigninState extends State<Signin> {
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextField(
+                  controller: signinController.repeatedPasswordController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'repeatedPassword',
@@ -113,7 +122,7 @@ class _SigninState extends State<Signin> {
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextField(
-                  // controller: ,
+                  controller: signinController.nicknameController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'NickName',
@@ -143,8 +152,7 @@ class _SigninState extends State<Signin> {
                 child: Text("회원가입"),
               ),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: ((context) => Signin())));
+                signinController.signinUser();
               },
             )
           ],
