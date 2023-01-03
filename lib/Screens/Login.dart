@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:moida_mobile/Controller/authController.dart';
+import 'package:moida_mobile/Screens/NoticeList.dart';
 import 'package:moida_mobile/Screens/SignIn.dart';
 
 class Login extends StatefulWidget {
@@ -108,6 +109,10 @@ class _LoginState extends State<Login> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(onPressed: (() {
+        Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => NoticeList())));
+      })),
     );
   }
 }
