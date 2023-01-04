@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:moida_mobile/Controller/authController.dart';
 import 'package:moida_mobile/Screens/SignIn.dart';
+import 'package:moida_mobile/Screens/loginTest.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -13,10 +15,20 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   LoginController loginController = LoginController();
+
+  late FToast fToast;
+
+  @override
+  void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+    loginController;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Container(
         alignment: Alignment.center,
         child: Column(
@@ -80,8 +92,17 @@ class _LoginState extends State<Login> {
                           color: Colors.amber),
                       child: Text("로그인"),
                     ),
-                    onTap: () {
-                      loginController.loginUser();
+                    onTap: () async {
+                      // loginController.loginUser();
+                      if (await loginController.loginUser()) {
+                        fToast.showToast(
+                            child: Text('로그인에 실패했습니다. 회원정보를 확인해주세요.'));
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) => LoginTest())));
+                      }
                     },
                   ),
                   SizedBox(

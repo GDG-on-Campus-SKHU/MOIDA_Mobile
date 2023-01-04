@@ -37,7 +37,7 @@ class LoginController {
   TextEditingController passwordController =
       TextEditingController(); //Password Controller
 
-  Future loginUser() async {
+  Future<bool> loginUser() async {
     const url = 'http://moida-skhu.duckdns.org/login';
 
     var response = await http.post(Uri.parse(url),
@@ -47,9 +47,11 @@ class LoginController {
           "password": passwordController.text,
         }));
     if (response.statusCode == 200) {
-      print(response.body);
+      print(response.body.isEmpty);
+      return response.body.isEmpty;
     } else {
-      print(response.body);
+      print(response.body.isEmpty);
+      return response.body.isEmpty;
     }
   }
 }
