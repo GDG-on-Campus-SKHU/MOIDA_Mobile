@@ -23,12 +23,12 @@ class _LoginState extends State<Login> {
     super.initState();
     fToast = FToast();
     fToast.init(context);
+    loginController;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Container(
         alignment: Alignment.center,
         child: Column(
@@ -92,16 +92,17 @@ class _LoginState extends State<Login> {
                           color: Colors.amber),
                       child: Text("로그인"),
                     ),
-                    onTap: () {
-                      // if (loginController.loginUser()) {
-                      //   Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: ((context) => LoginTest())));
-                      // } else {
-                      //   fToast.showToast(
-                      //       child: Text('로그인에 실패했습니다. 회원정보를 확인해주세요'));
-                      // }
+                    onTap: () async {
+                      // loginController.loginUser();
+                      if (await loginController.loginUser()) {
+                        fToast.showToast(
+                            child: Text('로그인에 실패했습니다. 회원정보를 확인해주세요.'));
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) => LoginTest())));
+                      }
                     },
                   ),
                   SizedBox(
