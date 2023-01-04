@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import '../Controller/authController.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -11,19 +12,18 @@ class Signin extends StatefulWidget {
 }
 
 class _SigninState extends State<Signin> {
-  // String username = '';
-  // String password = '';
-  // String repeatedPassword = '';
-  // String nickname = '';
-  // TextEditingController usernameController =
-  //     TextEditingController(); //usernameController
-  // TextEditingController passwordController =
-  //     TextEditingController(); //Password Controller
-  // TextEditingController repeatedPasswordController =
-  //     TextEditingController(); //repeatedPasswordController
-  // TextEditingController nicknameController =
-  //     TextEditingController(); //nicknameController
+  String password = '';
+  String repeatedPassword = '';
   SigninController signinController = SigninController();
+  late FToast fToast;
+
+  @override
+  void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,11 +76,11 @@ class _SigninState extends State<Signin> {
                       color: Colors.black,
                     ),
                   ),
-                  // onChanged: (value) {
-                  //   setState(() {
-                  //     password = value;
-                  //   });
-                  // },
+                  onChanged: (value) {
+                    setState(() {
+                      password = value;
+                    });
+                  },
                 ),
               ),
             ),
@@ -103,11 +103,11 @@ class _SigninState extends State<Signin> {
                       color: Colors.black,
                     ),
                   ),
-                  // onChanged: (value) {
-                  //   setState(() {
-                  //     repeatedPassword = value;
-                  //   });
-                  // },
+                  onChanged: (value) {
+                    setState(() {
+                      repeatedPassword = value;
+                    });
+                  },
                 ),
               ),
             ),
@@ -152,7 +152,12 @@ class _SigninState extends State<Signin> {
                 child: Text("회원가입"),
               ),
               onTap: () {
-                signinController.signinUser();
+                if (password != repeatedPassword) {
+                  fToast.showToast(child: Text('비밀번호를 확인주세요'));
+                } else {
+                  fToast.showToast(child: Text('회원가입에 성공했습니다.'));
+                  signinController.signinUser();
+                }
               },
             )
           ],
