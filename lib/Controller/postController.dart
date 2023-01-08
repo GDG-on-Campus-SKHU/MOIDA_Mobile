@@ -56,21 +56,35 @@ class writePostController {
 
 /**게시글 상세 정보 */
 class PostController {
-  static Future getUserPost(id) async {
+  static Future<PostModel> getUserPost(id) async {
     String? token = await storage.read(key: 'Token');
 
     var url = 'http://moida-skhu.duckdns.org/post/${id}';
+    PostModel postModel;
 
     var response = await http.get(
       Uri.parse(url),
       headers: {'Authorization': 'Bearer ${token}'},
     );
-    if (response.statusCode == 200) {
-      print(response.body);
-    } else {
-      print(response.body);
-    }
+
+    print(response.body);
+    var data = json.decode(response.body);
+    postModel = PostModel(
+        title: data['title'], type: data['type'], context: data['context']);
+    return postModel;
   }
+}
+
+/**게시글 상세 정보 모델 클래스 */
+class PostModel {
+  final String title; //현재 온도
+  final String type; //최저 온도
+  final String context; //
+  PostModel({
+    required this.title,
+    required this.type,
+    required this.context,
+  });
 }
 
 /**게시글 리스트 */
@@ -95,6 +109,7 @@ Future<PostList> listPost() async {
   return new PostList.fromJson(jsonResponse);
 }
 
+/**게시글 리스트 모델 클래스 */
 class PostList {
   //게시물 리스트 모델 클래스
   List<Content>? content;

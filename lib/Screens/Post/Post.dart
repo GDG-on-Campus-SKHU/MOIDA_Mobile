@@ -13,17 +13,40 @@ class Post extends StatefulWidget {
 }
 
 class _PostState extends State<Post> {
+  late Future<PostModel> psModel;
+  @override
+  void initState() {
+    super.initState();
+    psModel = PostController.getUserPost(widget.id);
+
+    // timeWeather = getTimeWeather();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: FutureBuilder(
-      future: PostController.getUserPost(widget.id),
+      future: psModel,
       builder: (context, snapshot) {
-        return Container(
-          width: double.infinity,
-          height: double.infinity,
-          child: Column(children: [Text(snapshot.data)]),
-        );
+        if (snapshot.hasData) {
+          var title = snapshot.data!.title;
+          var type = snapshot.data!.type;
+          var mainContext = snapshot.data!.context;
+          return Container(
+            width: double.infinity,
+            height: double.infinity,
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text('$title'),
+              Text('$type'),
+              Text('$mainContext'),
+            ]),
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
       },
     ));
   }
