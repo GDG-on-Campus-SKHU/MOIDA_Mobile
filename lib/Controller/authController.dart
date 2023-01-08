@@ -37,12 +37,12 @@ class SigninController {
 class LoginController {
   //로그인 클래스 & 토큰 관리
 
-  TextEditingController usernameController =
+  static TextEditingController usernameController =
       TextEditingController(); //usernameController
-  TextEditingController passwordController =
+  static TextEditingController passwordController =
       TextEditingController(); //Password Controller
 
-  Future<bool> loginUser() async {
+  static Future<bool> loginUser() async {
     const url = 'http://moida-skhu.duckdns.org/login';
     // http.Response response;
     User userData;
@@ -62,6 +62,8 @@ class LoginController {
         accessToken: data["accessToken"],
       );
       String token = userData.accessToken.toString();
+      String userID = usernameController.text;
+      await storage.write(key: 'userID', value: userID);
       await storage.write(key: 'Token', value: token);
       print(token);
       print(response.body);

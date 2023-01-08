@@ -45,7 +45,7 @@ class _LoginState extends State<Login> {
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: TextField(
-                    controller: loginController.usernameController,
+                    controller: LoginController.usernameController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'UserName',
@@ -66,7 +66,7 @@ class _LoginState extends State<Login> {
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: TextField(
-                    controller: loginController.passwordController,
+                    controller: LoginController.passwordController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'PassWord',
@@ -96,7 +96,7 @@ class _LoginState extends State<Login> {
                     ),
                     onTap: () async {
                       // loginController.loginUser();
-                      if (await loginController.loginUser()) {
+                      if (await LoginController.loginUser()) {
                         fToast.showToast(
                             child: Text('로그인에 실패했습니다. 회원정보를 확인해주세요.'));
                       } else {
