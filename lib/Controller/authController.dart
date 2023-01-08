@@ -3,6 +3,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+final storage = FlutterSecureStorage();
+
 class SigninController {
   //회원가입 클래스
   TextEditingController usernameController =
@@ -34,7 +36,7 @@ class SigninController {
 
 class LoginController {
   //로그인 클래스 & 토큰 관리
-  static final storage = FlutterSecureStorage();
+
   TextEditingController usernameController =
       TextEditingController(); //usernameController
   TextEditingController passwordController =

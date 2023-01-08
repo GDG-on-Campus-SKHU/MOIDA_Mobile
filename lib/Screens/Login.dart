@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:moida_mobile/Controller/authController.dart';
+import 'package:moida_mobile/Screens/Post/PostList.dart';
 import 'package:moida_mobile/Screens/SignIn.dart';
 
 import 'package:moida_mobile/Screens/loginTest.dart';
@@ -102,7 +103,7 @@ class _LoginState extends State<Login> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: ((context) => LoginTest())));
+                                builder: ((context) => PostList())));
                       }
                     },
                   ),
