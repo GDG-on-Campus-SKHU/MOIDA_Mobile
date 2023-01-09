@@ -160,3 +160,87 @@ class Content {
     return data;
   }
 }
+
+/**댓글 조회, 등록 클래스 */
+class PostComment {
+  static TextEditingController commentController =
+      TextEditingController(); //commentController
+  static Future commentWrite(id) async {
+    /**댓글 등록 */
+    var url = 'http://moida-skhu.duckdns.org/post/${id}/comments/new';
+
+    String? token = await storage.read(key: 'Token');
+    String? userID = await storage.read(key: 'userID');
+
+    var response = await http.post(Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer ${token}',
+          "Content-Type": "application/json",
+          'Charset': 'utf-8',
+        },
+        body: jsonEncode({
+          "postId": id,
+          "writer": userID,
+          "context": commentController.text
+        }));
+    if (response.statusCode == 200) {
+      print(response.body);
+    } else {
+      print(response.body);
+    }
+  }
+
+  static Future<CommentList> commentRead(id) async {
+    /**댓글 조회 */
+    var url = 'http://moida-skhu.duckdns.org/post/${id}/comments';
+
+    String? token = await storage.read(key: 'Token');
+    String? userID = await storage.read(key: 'userID');
+
+    var response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer ${token}',
+        "Content-Type": "application/json",
+        'Charset': 'utf-8',
+      },
+    );
+    print('댓글 목록 \n${response.body}');
+
+    final jsonResponse = json.decode(response.body); //받은 정보를 json형태로 decode
+    CommentList commentList = CommentList.fromJson(jsonResponse);
+
+    return commentList;
+  }
+}
+
+class CommentList {
+  List<userComment> comments;
+
+  CommentList({
+    required this.comments,
+  });
+
+  factory CommentList.fromJson(List<dynamic> json) {
+    List<userComment> commentsList = <userComment>[];
+    commentsList = json.map((i) => userComment.fromJson(i)).toList();
+
+    return new CommentList(comments: commentsList);
+  }
+}
+
+class userComment {
+  String? writer;
+  String? context;
+
+  userComment({
+    this.writer,
+    this.context,
+  });
+  factory userComment.fromJson(Map<String, dynamic> json) {
+    return new userComment(
+      writer: json['writer'],
+      context: json['context'],
+    );
+  }
+}
