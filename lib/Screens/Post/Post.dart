@@ -44,6 +44,7 @@ class _PostState extends State<Post> {
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Container(
+                  /**게시글 상세 */
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -87,40 +88,6 @@ class _PostState extends State<Post> {
                               padding: const EdgeInsets.all(10.0),
                               child: Text('$mainContext'),
                             )),
-                        // Container(
-                        //   //댓글 등록
-                        //   width: MediaQuery.of(context).size.width * 0.9,
-                        //   height: 100,
-                        //   decoration: BoxDecoration(
-                        //       border: Border.all(width: 1, color: Colors.amber)),
-                        //   child: Container(
-                        //     width: MediaQuery.of(context).size.width * 0.9,
-                        //     padding: EdgeInsets.all(10),
-                        //     child: TextField(
-                        //       controller: PostComment.commentController,
-                        //       decoration: InputDecoration(
-                        //           border: InputBorder.none,
-                        //           hintText: '댓글',
-                        //           hintStyle: TextStyle(
-                        //             color: Colors.black,
-                        //           ),
-                        //           suffixIcon: IconButton(
-                        //               onPressed: (() {
-                        //                 if (commentText == '') {
-                        //                   Text('data');
-                        //                 } else {
-                        //                   PostComment.commentWrite(widget.id);
-                        //                 }
-                        //               }),
-                        //               icon: Icon(Icons.add))),
-                        //       onChanged: ((value) {
-                        //         setState(() {
-                        //           commentText = value;
-                        //         });
-                        //       }),
-                        //     ),
-                        //   ),
-                        // ),
                         Container(
                           //댓글 조회
                           width: MediaQuery.of(context).size.width * 0.9,
@@ -133,6 +100,7 @@ class _PostState extends State<Post> {
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 return ListView.builder(
+                                    /**댓글 */
                                     scrollDirection: Axis.vertical,
                                     itemCount: snapshot.data! == null
                                         ? 0
@@ -164,6 +132,7 @@ class _PostState extends State<Post> {
                                                         '${snapshot.data!.comments[index].context}'),
                                                   ),
                                                   Container(
+                                                      /**대댓글 작성 */
                                                       alignment:
                                                           Alignment.topRight,
                                                       padding:

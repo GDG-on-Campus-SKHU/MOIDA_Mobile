@@ -7,6 +7,9 @@ import 'package:moida_mobile/Screens/Post/PostList.dart';
 import 'package:moida_mobile/Screens/SignIn.dart';
 
 import 'package:moida_mobile/Screens/loginTest.dart';
+import 'package:moida_mobile/Styles/ColorStyles.dart';
+import 'package:moida_mobile/Styles/Styles.dart';
+import 'package:moida_mobile/main.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -31,26 +34,39 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("MOIDA Login Page"),
+            Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage('images/moidaLogo.png'))),
+            ),
             Container(
               width: MediaQuery.of(context).size.width * 0.8,
               height: 80,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15), color: Colors.amber),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                  width: 1,
+                  color: ColorStyle.mainColor,
+                ),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: TextField(
                     controller: LoginController.usernameController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'UserName',
+                      hintText: 'Id',
                       hintStyle: TextStyle(
-                        color: Colors.black,
+                        color: ColorStyle.mainColor,
                       ),
                     )),
               ),
@@ -62,7 +78,12 @@ class _LoginState extends State<Login> {
               width: MediaQuery.of(context).size.width * 0.8,
               height: 80,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15), color: Colors.amber),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                  width: 1,
+                  color: ColorStyle.mainColor,
+                ),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: TextField(
@@ -71,7 +92,7 @@ class _LoginState extends State<Login> {
                       border: InputBorder.none,
                       hintText: 'PassWord',
                       hintStyle: TextStyle(
-                        color: Colors.black,
+                        color: ColorStyle.mainColor,
                       ),
                     )),
               ),
@@ -83,6 +104,7 @@ class _LoginState extends State<Login> {
               width: MediaQuery.of(context).size.width * 0.8,
               height: 80,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   GestureDetector(
                     child: Container(
@@ -91,8 +113,15 @@ class _LoginState extends State<Login> {
                       height: 80,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color: Colors.amber),
-                      child: Text("로그인"),
+                          // border: Border.all(
+                          //   width: 1,
+                          //   color: ColorStyle.mainColor,
+                          // ),
+                          color: ColorStyle.mainColor),
+                      child: Text(
+                        "로그인",
+                        style: Styles.loginBoxText,
+                      ),
                     ),
                     onTap: () async {
                       // loginController.loginUser();
@@ -118,8 +147,15 @@ class _LoginState extends State<Login> {
                       height: 80,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color: Colors.amber),
-                      child: Text("회원가입"),
+                          // border: Border.all(
+                          //   width: 1,
+                          //   color: ColorStyle.mainColor,
+                          // ),
+                          color: ColorStyle.mainColor),
+                      child: Text(
+                        "회원가입",
+                        style: Styles.loginBoxText,
+                      ),
                     ),
                     onTap: () {
                       Navigator.push(context,

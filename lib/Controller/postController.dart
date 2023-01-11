@@ -149,15 +149,17 @@ class Content {
   String? title;
   String? type;
   String? context;
+  String? createdDate;
   late int id;
 
-  Content({this.author, this.title, this.type, this.context});
+  Content({this.author, this.title, this.type, this.context, this.createdDate});
   Content.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     author = json['author'];
     title = json['title'];
     type = json['type'];
     context = json['context'];
+    createdDate = json['createdDate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -167,6 +169,7 @@ class Content {
     data['title'] = this.title;
     data['type'] = this.type;
     data['context'] = this.context;
+    data['createdDate'] = this.createdDate;
     return data;
   }
 }
@@ -340,4 +343,26 @@ class PostChildComment {
       print(response.body);
     }
   }
+}
+
+/**게시글 타입 별 */
+Future<PostList> listTypePost() async {
+  const url = 'http://moida-skhu.duckdns.org/post/type/study';
+
+  String? token = await storage.read(key: 'Token');
+
+  var response = await http.get(
+    Uri.parse(url),
+    headers: {'Authorization': 'Bearer ${token}'},
+  );
+  if (response.statusCode == 200) {
+    print(token);
+    print('타입별 게시글 목록${response.body}');
+  } else {
+    print(response.body);
+  }
+
+  final jsonResponse = json.decode(response.body);
+
+  return new PostList.fromJson(jsonResponse);
 }

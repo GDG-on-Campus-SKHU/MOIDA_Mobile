@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:moida_mobile/Controller/authController.dart';
 import 'package:moida_mobile/Controller/postController.dart';
+import 'package:moida_mobile/Screens/Login.dart';
 import 'package:moida_mobile/main.dart';
 
 class MyPage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _MyPageState extends State<MyPage> {
               onPressed: () {
                 storage.deleteAll();
                 Navigator.push(context,
-                    MaterialPageRoute(builder: ((context) => MyApp())));
+                    MaterialPageRoute(builder: ((context) => Login())));
               },
               icon: Icon(Icons.logout))
         ],

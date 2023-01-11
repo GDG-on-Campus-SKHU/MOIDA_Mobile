@@ -19,3 +19,22 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+// class MyApp extends StatefulWidget {
+//   const MyApp({super.key});
+
+//   @override
+//   State<MyApp> createState() => _MyAppState();
+// }
+
+// class _MyAppState extends State<MyApp> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//         debugShowCheckedModeBanner: false,
+//         theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
+//         home: LoginController.loginUser() == true ? PostListPage() : Login()
+//         // await LoginController.loginUser()  ? PostListPage() : Login(),
+
+//         );
+//   }
+// }
