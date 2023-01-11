@@ -222,7 +222,8 @@ class PostComment {
 
     final jsonResponse =
         json.decode(utf8.decode(response.bodyBytes)); //받은 정보를 json형태로 decode
-    CommentList commentList = CommentList.fromJson(jsonResponse);
+    CommentList commentList;
+    commentList = CommentList.fromJson(jsonResponse);
 
     return commentList;
   }
@@ -250,6 +251,7 @@ class userComment {
   String? context;
   int? id;
   List<ChildComments>? childComments;
+  String? createdDate;
 
   userComment({this.writer, this.context, this.id, this.childComments});
   // factory userComment.fromJson(Map<String, dynamic> json) {
@@ -261,6 +263,7 @@ class userComment {
 
     writer = json['writer'];
     context = json['context'];
+    createdDate = json['createdDate'];
 
     if (json['childComments'] != null) {
       childComments = <ChildComments>[];
@@ -268,6 +271,21 @@ class userComment {
         childComments!.add(new ChildComments.fromJson(v));
       });
     }
+  }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+
+    data['writer'] = this.writer;
+    data['context'] = this.context;
+
+    if (this.childComments != null) {
+      data['childComments'] =
+          this.childComments!.map((v) => v.toJson()).toList();
+    }
+    data['createdDate'] = this.createdDate;
+
+    return data;
   }
 }
 
@@ -365,4 +383,17 @@ Future<PostList> listTypePost() async {
   final jsonResponse = json.decode(response.body);
 
   return new PostList.fromJson(jsonResponse);
+}
+
+/**게시글 삭제 */
+Future<void> deletePost(id) async {
+  var url = 'http://moida-skhu.duckdns.org/post/${id}';
+
+  String? token = await storage.read(key: 'Token');
+
+  var response = await http.delete(
+    Uri.parse(url),
+    headers: {'Authorization': 'Bearer ${token}'},
+  );
+  print(response.body);
 }

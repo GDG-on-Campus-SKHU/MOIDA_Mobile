@@ -119,3 +119,41 @@ class User {
     return data;
   }
 }
+
+Future<getUserStatus> getUserId() async {
+  const url = 'http://moida-skhu.duckdns.org/user';
+  // http.Response response;
+
+  String? token = await storage.read(key: 'Token');
+  getUserStatus getStatus;
+
+  var response = await http.get(
+    Uri.parse(url),
+    headers: {'Authorization': 'Bearer ${token}'},
+  );
+
+  if (response.statusCode == 200) {
+    print('로그인 정보 ${response.body}');
+    var data = json.decode(response.body);
+    getStatus =
+        getUserStatus(username: data['username'], nickname: data['nickname']);
+    print('${response.body}');
+    return getStatus;
+  } else {
+    print('로그인 정보 ${response.body}');
+
+    getStatus = getUserStatus(username: 'null', nickname: 'null');
+    print('${response.body}');
+    return getStatus;
+  }
+}
+
+class getUserStatus {
+  final String username; //user id
+  final String nickname; //user nicname
+
+  getUserStatus({
+    required this.username,
+    required this.nickname,
+  });
+}

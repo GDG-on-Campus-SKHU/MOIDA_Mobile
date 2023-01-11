@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:moida_mobile/Controller/authController.dart';
 import 'package:moida_mobile/Screens/MyPage.dart';
 import 'package:moida_mobile/Screens/Post/Post.dart';
 import 'package:moida_mobile/Screens/Post/WritePost.dart';
@@ -38,8 +39,7 @@ class _PostListPageState extends State<PostListPage> {
         //     IconButton(
         //       icon: Icon(Icons.person),
         //       onPressed: () {
-        //         Navigator.push(context,
-        //             MaterialPageRoute(builder: ((context) => TypePost())));
+        //         getUserId();
         //       },
         //     )
         //   ],
@@ -147,7 +147,9 @@ class _PostListPageState extends State<PostListPage> {
                             }));
                       } else {
                         return Center(
-                          child: Text('no has data'),
+                          child: CircularProgressIndicator(
+                            color: ColorStyle.mainColor,
+                          ),
                         );
                       }
                     }),
