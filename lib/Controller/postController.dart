@@ -64,26 +64,36 @@ class PostController {
 
     var response = await http.get(
       Uri.parse(url),
-      headers: {'Authorization': 'Bearer ${token}'},
+      headers: {
+        'Authorization': 'Bearer ${token}',
+        "Content-Type": "application/json",
+        'Charset': 'utf-8',
+      },
     );
 
-    print(response.body);
+    print('게시글 상세 : ${response.body}');
     var data = json.decode(response.body);
     postModel = PostModel(
-        title: data['title'], type: data['type'], context: data['context']);
+      author: data['author'],
+      title: data['title'],
+      type: data['type'],
+      context: data['context'],
+    );
     return postModel;
   }
 }
 
 /**게시글 상세 정보 모델 클래스 */
 class PostModel {
-  final String title; //현재 온도
-  final String type; //최저 온도
-  final String context; //
+  final String title; //게시글 제목
+  final String type; //게시글 태그
+  final String context; //게시글 내용
+  final String author; //게시글 작성자
   PostModel({
     required this.title,
     required this.type,
     required this.context,
+    required this.author,
   });
 }
 
@@ -99,7 +109,7 @@ Future<PostList> listPost() async {
   );
   if (response.statusCode == 200) {
     print(token);
-    print(response.body);
+    print('게시글 목록${response.body}');
   } else {
     print(response.body);
   }
@@ -205,15 +215,17 @@ class PostComment {
         'Charset': 'utf-8',
       },
     );
-    print('댓글 목록 \n${response.body}');
+    print('댓글 목록 ${response.body}');
 
-    final jsonResponse = json.decode(response.body); //받은 정보를 json형태로 decode
+    final jsonResponse =
+        json.decode(utf8.decode(response.bodyBytes)); //받은 정보를 json형태로 decode
     CommentList commentList = CommentList.fromJson(jsonResponse);
 
     return commentList;
   }
 }
 
+/**댓글 리스트 모델 */
 class CommentList {
   List<userComment> comments;
 
@@ -229,18 +241,103 @@ class CommentList {
   }
 }
 
+/**댓글 구성 요소 모델 */
 class userComment {
   String? writer;
   String? context;
+  int? id;
+  List<ChildComments>? childComments;
 
-  userComment({
-    this.writer,
-    this.context,
-  });
-  factory userComment.fromJson(Map<String, dynamic> json) {
-    return new userComment(
-      writer: json['writer'],
-      context: json['context'],
-    );
+  userComment({this.writer, this.context, this.id, this.childComments});
+  // factory userComment.fromJson(Map<String, dynamic> json) {
+  //   return new userComment(
+  //       writer: json['writer'], context: json['context'], id: json['id']);
+  // }
+  userComment.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+
+    writer = json['writer'];
+    context = json['context'];
+
+    if (json['childComments'] != null) {
+      childComments = <ChildComments>[];
+      json['childComments'].forEach((v) {
+        childComments!.add(new ChildComments.fromJson(v));
+      });
+    }
+  }
+}
+
+class ChildComments {
+  int? id;
+  int? postId;
+  String? writer;
+  String? context;
+  int? parentCommentId;
+
+  String? createdDate;
+  String? modifiedDate;
+
+  ChildComments(
+      {this.id,
+      this.postId,
+      this.writer,
+      this.context,
+      this.parentCommentId,
+      this.createdDate,
+      this.modifiedDate});
+
+  ChildComments.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    postId = json['postId'];
+    writer = json['writer'];
+    context = json['context'];
+    parentCommentId = json['parentCommentId'];
+
+    createdDate = json['createdDate'];
+    modifiedDate = json['modifiedDate'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['postId'] = this.postId;
+    data['writer'] = this.writer;
+    data['context'] = this.context;
+    data['parentCommentId'] = this.parentCommentId;
+
+    data['createdDate'] = this.createdDate;
+    data['modifiedDate'] = this.modifiedDate;
+    return data;
+  }
+}
+
+class PostChildComment {
+  static TextEditingController childCommentController =
+      TextEditingController(); //commentController
+  static Future childCommentWrite(postId, index) async {
+    /**댓글 등록 */
+    var url = 'http://moida-skhu.duckdns.org/post/${postId}/comments/new';
+
+    String? token = await storage.read(key: 'Token');
+    String? userID = await storage.read(key: 'userID');
+
+    var response = await http.post(Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer ${token}',
+          "Content-Type": "application/json",
+          'Charset': 'utf-8',
+        },
+        body: jsonEncode({
+          "postId": postId,
+          "writer": userID,
+          "context": childCommentController.text,
+          "parentCommentId": index
+        }));
+    if (response.statusCode == 200) {
+      print(response.body);
+    } else {
+      print(response.body);
+    }
   }
 }

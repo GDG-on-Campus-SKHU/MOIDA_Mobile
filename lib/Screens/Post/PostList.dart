@@ -6,14 +6,14 @@ import 'package:moida_mobile/Screens/Post/Post.dart';
 import 'package:moida_mobile/Screens/Post/WritePost.dart';
 import '../../Controller/postController.dart';
 
-class PostList extends StatefulWidget {
-  const PostList({super.key});
+class PostListPage extends StatefulWidget {
+  const PostListPage({super.key});
 
   @override
-  State<PostList> createState() => _PostListState();
+  State<PostListPage> createState() => _PostListPageState();
 }
 
-class _PostListState extends State<PostList> {
+class _PostListPageState extends State<PostListPage> {
   @override
   void initState() {
     // TODO: implement initState

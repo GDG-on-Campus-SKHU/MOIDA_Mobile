@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:moida_mobile/main.dart';
 import '../Controller/authController.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -157,6 +158,8 @@ class _SigninState extends State<Signin> {
                 } else {
                   fToast.showToast(child: Text('회원가입에 성공했습니다.'));
                   signinController.signinUser();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: ((context) => MyApp())));
                 }
               },
             )

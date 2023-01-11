@@ -99,11 +99,12 @@ class _LoginState extends State<Login> {
                       if (await LoginController.loginUser()) {
                         fToast.showToast(
                             child: Text('로그인에 실패했습니다. 회원정보를 확인해주세요.'));
+                        print('login error');
                       } else {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: ((context) => PostList())));
+                                builder: ((context) => PostListPage())));
                       }
                     },
                   ),

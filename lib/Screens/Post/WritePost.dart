@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:moida_mobile/Controller/postController.dart';
+import 'package:moida_mobile/Screens/Post/PostList.dart';
 
 class WritePost extends StatefulWidget {
   const WritePost({super.key});
@@ -86,6 +87,8 @@ class _WritePostState extends State<WritePost> {
             ),
             onTap: () {
               writePostController.postWrite();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: ((context) => PostListPage())));
             },
           )
         ],

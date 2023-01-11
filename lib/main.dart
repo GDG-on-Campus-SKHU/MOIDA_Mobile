@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
-      home: storage.readAll() == '' ? PostList() : Login(),
+      home: storage.readAll() == '' ? PostListPage() : Login(),
     );
   }
 }
