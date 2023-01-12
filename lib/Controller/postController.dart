@@ -109,7 +109,7 @@ Future<PostList> listPost() async {
   );
   if (response.statusCode == 200) {
     print(token);
-    print('게시글 목록${response.body}');
+    print('게시글 목록${utf8.decode(response.bodyBytes)}');
   } else {
     print(response.body);
   }
@@ -409,4 +409,73 @@ Future<void> deletePost(id) async {
     headers: {'Authorization': 'Bearer ${token}'},
   );
   print(response.body);
+}
+
+/**게시글 수정 */
+Future<ModiPostModel> modifyPost(id) async {
+  var url = 'http://moida-skhu.duckdns.org/post/edit/${id}';
+
+  String? token = await storage.read(key: 'Token');
+  ModiPostModel modiPostModel;
+
+  var response = await http.get(
+    Uri.parse(url),
+    headers: {'Authorization': 'Bearer ${token}'},
+  );
+  print('modify : ${response.body}');
+  var data = json.decode(utf8.decode(response.bodyBytes));
+  modiPostModel = ModiPostModel(
+      author: data['author'],
+      title: data['title'],
+      type: data['type'],
+      context: data['context'],
+      modifiedDate: data['modifiedDate']);
+  return modiPostModel;
+}
+
+class ModiPostModel {
+  final String title; //게시글 제목
+  final String type; //게시글 태그
+  final String context; //게시글 내용
+  final String author;
+  final String modifiedDate; //게시글 작성자
+  ModiPostModel(
+      {required this.title,
+      required this.type,
+      required this.context,
+      required this.author,
+      required this.modifiedDate});
+}
+
+/**게시글 수정 path */
+class modiPostController {
+  static TextEditingController modyTitleController =
+      TextEditingController(); //titleController
+  static TextEditingController modyTypeController =
+      TextEditingController(); //typeController
+  static TextEditingController modyContextController =
+      TextEditingController(); //contextController
+  static Future modiPostPath(id, author) async {
+    var url = 'http://moida-skhu.duckdns.org/post/edit/${id}';
+
+    String? token = await storage.read(key: 'Token');
+
+    var response = await http.patch(Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer ${token}',
+          "Content-Type": "application/json",
+          'Charset': 'utf-8',
+        },
+        body: jsonEncode({
+          "author": author,
+          "title": modyTitleController.text,
+          "type": modyTypeController.text,
+          "context": modyContextController.text
+        }));
+    if (response.statusCode == 200) {
+      print(response.body);
+    } else {
+      print(response.body);
+    }
+  }
 }

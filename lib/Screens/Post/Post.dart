@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:moida_mobile/Controller/authController.dart';
+import 'package:moida_mobile/Screens/Post/ModiPost.dart';
 import 'package:moida_mobile/Screens/Post/PostList.dart';
 import 'package:moida_mobile/Screens/Post/WritePost.dart';
 import 'package:moida_mobile/Styles/Styles.dart';
@@ -82,7 +83,7 @@ class _PostState extends State<Post> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
-                                                width: 250,
+                                                width: 230,
                                                 alignment: Alignment.topLeft,
                                                 padding:
                                                     const EdgeInsets.all(10.0),
@@ -92,47 +93,73 @@ class _PostState extends State<Post> {
                                                 ),
                                               ),
                                               Container(
-                                                child: IconButton(
-                                                    onPressed: (() {
-                                                      if (userId == user) {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                ((context) {
-                                                              return AlertDialog(
-                                                                title: Text(
-                                                                    '게시글을 삭제하시겠습니까?'),
-                                                                actions: [
-                                                                  TextButton(
-                                                                      onPressed:
-                                                                          (() {
-                                                                        deletePost(
-                                                                            widget.id);
+                                                child: userId == user
+                                                    ? Row(
+                                                        children: [
+                                                          IconButton(
+                                                              onPressed: (() {
+                                                                showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        ((context) {
+                                                                      return AlertDialog(
+                                                                        title: Text(
+                                                                            '게시글을 수정하시겠습니까?'),
+                                                                        actions: [
+                                                                          TextButton(
+                                                                              onPressed: (() {
+                                                                                Navigator.push(
+                                                                                    context,
+                                                                                    MaterialPageRoute(
+                                                                                        builder: ((context) => ModiPost(
+                                                                                              id: widget.id,
+                                                                                            ))));
+                                                                              }),
+                                                                              child: Text('수정')),
+                                                                          TextButton(
+                                                                              onPressed: (() {
+                                                                                Navigator.pop(context);
+                                                                              }),
+                                                                              child: Text('취소'))
+                                                                        ],
+                                                                      );
+                                                                    }));
+                                                              }),
+                                                              icon: Icon(
+                                                                  Icons.edit)),
+                                                          IconButton(
+                                                              onPressed: (() {
+                                                                showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        ((context) {
+                                                                      return AlertDialog(
+                                                                        title: Text(
+                                                                            '게시글을 삭제하시겠습니까?'),
+                                                                        actions: [
+                                                                          TextButton(
+                                                                              onPressed: (() {
+                                                                                deletePost(widget.id);
 
-                                                                        Navigator.push(
-                                                                            context,
-                                                                            MaterialPageRoute(builder: ((context) => PostListPage())));
-                                                                      }),
-                                                                      child: Text(
-                                                                          '삭제')),
-                                                                  TextButton(
-                                                                      onPressed:
-                                                                          (() {
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                      }),
-                                                                      child: Text(
-                                                                          '취소'))
-                                                                ],
-                                                              );
-                                                            }));
-                                                      } else {
-                                                        FToast().showToast(
-                                                            child: Text(
-                                                                '사용자가 작성한 게시물이 아닙니다.'));
-                                                      }
-                                                    }),
-                                                    icon: Icon(Icons.delete)),
+                                                                                Navigator.push(context, MaterialPageRoute(builder: ((context) => PostListPage())));
+                                                                              }),
+                                                                              child: Text('삭제')),
+                                                                          TextButton(
+                                                                              onPressed: (() {
+                                                                                Navigator.pop(context);
+                                                                              }),
+                                                                              child: Text('취소'))
+                                                                        ],
+                                                                      );
+                                                                    }));
+                                                              }),
+                                                              icon: Icon(Icons
+                                                                  .delete)),
+                                                        ],
+                                                      )
+                                                    : SizedBox(),
                                               )
                                             ],
                                           ),

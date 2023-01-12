@@ -114,10 +114,6 @@ class _LoginState extends State<Login> {
                       height: 80,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          // border: Border.all(
-                          //   width: 1,
-                          //   color: ColorStyle.mainColor,
-                          // ),
                           color: ColorStyle.mainColor),
                       child: Text(
                         "로그인",

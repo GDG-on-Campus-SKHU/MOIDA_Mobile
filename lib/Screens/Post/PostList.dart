@@ -28,6 +28,9 @@ class _PostListPageState extends State<PostListPage> {
     return RefreshIndicator(
       onRefresh: () async {
         await Future.delayed(Duration(milliseconds: 1500));
+        writePostController.titleController.clear();
+        writePostController.typeController.clear();
+        writePostController.contextController.clear();
         setState(() {
           listPost();
         });
