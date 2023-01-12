@@ -34,16 +34,6 @@ class _PostListPageState extends State<PostListPage> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        // appBar: AppBar(
-        //   actions: [
-        //     IconButton(
-        //       icon: Icon(Icons.person),
-        //       onPressed: () {
-        //         getUserId();
-        //       },
-        //     )
-        //   ],
-        // ),
         body: Container(
           alignment: Alignment.center,
           width: double.infinity,
@@ -59,6 +49,21 @@ class _PostListPageState extends State<PostListPage> {
                           image: DecorationImage(
                               fit: BoxFit.contain,
                               image: AssetImage('images/moidaLogo.png'))),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                          onPressed: (() {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => MyPage())));
+                          }),
+                          icon: Icon(
+                            Icons.person,
+                            color: ColorStyle.mainColor,
+                          )),
                     ),
                     Container(
                         alignment: Alignment.bottomCenter,
@@ -196,9 +201,15 @@ String typeStringKo(typeData) {
   switch (typeData) {
     case 'meal':
       return '혼밥';
+    case 'MEAL':
+      return '혼밥';
     case 'project':
       return '팀플';
+    case 'PROJECT':
+      return '팀플';
     case 'study':
+      return '공부';
+    case 'STUDY':
       return '공부';
 
     default:

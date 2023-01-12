@@ -377,8 +377,8 @@ class PostChildComment {
 }
 
 /**게시글 타입 별 */
-Future<PostList> listTypePost() async {
-  const url = 'http://moida-skhu.duckdns.org/post/type/study';
+Future<PostList> listTypePost(ctg) async {
+  var url = 'http://moida-skhu.duckdns.org/post/type/${ctg}';
 
   String? token = await storage.read(key: 'Token');
 
@@ -393,7 +393,7 @@ Future<PostList> listTypePost() async {
     print(response.body);
   }
 
-  final jsonResponse = json.decode(response.body);
+  final jsonResponse = json.decode(utf8.decode(response.bodyBytes));
 
   return new PostList.fromJson(jsonResponse);
 }

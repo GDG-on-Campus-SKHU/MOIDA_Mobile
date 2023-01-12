@@ -17,42 +17,31 @@ class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('MyPage'),
-        actions: [
-          IconButton(
-              onPressed: () {
-                storage.deleteAll();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: ((context) => Login())));
-              },
-              icon: Icon(Icons.logout))
-        ],
-      ),
-      body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
+        body: SafeArea(
+            child: FutureBuilder(
+      future: userDataPost(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Center(
+            child: Column(children: [
+              Text('${snapshot.data!.username}'),
+              Text('${snapshot.data!.nickname}'),
               Container(
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: 200,
-                color: Colors.amber,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [Icon(Icons.person_outline), Text('data')],
-                ),
-              ),
-              IconButton(
-                  onPressed: () {
-                    // userPostController.getUserPost();
-                  },
-                  icon: Icon(Icons.padding))
-            ],
-          )),
-    );
+                height: 500,
+                child: ListView.builder(
+                    itemCount: snapshot.data!.posts!.myContent!.length,
+                    itemBuilder: ((context, index) {
+                      return Text('${snapshot.data!.posts!.myContent![index]}');
+                    })),
+              )
+            ]),
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    )));
   }
 }
