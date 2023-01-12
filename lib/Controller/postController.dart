@@ -72,7 +72,7 @@ class PostController {
     );
 
     print('게시글 상세 : ${response.body}');
-    var data = json.decode(response.body);
+    var data = json.decode(utf8.decode(response.bodyBytes));
     postModel = PostModel(
       author: data['author'],
       title: data['title'],
@@ -114,7 +114,7 @@ Future<PostList> listPost() async {
     print(response.body);
   }
 
-  final jsonResponse = json.decode(response.body);
+  final jsonResponse = json.decode(utf8.decode(response.bodyBytes));
 
   return new PostList.fromJson(jsonResponse);
 }
@@ -203,7 +203,7 @@ class PostComment {
     }
   }
 
-  static Future<CommentList> commentRead(id) async {
+  static Future<CommentList?> commentRead(id) async {
     /**댓글 조회 */
     var url = 'http://moida-skhu.duckdns.org/post/${id}/comments';
 
@@ -219,11 +219,14 @@ class PostComment {
       },
     );
     print('댓글 목록 ${response.body}');
-
+    CommentList? commentList;
     final jsonResponse =
         json.decode(utf8.decode(response.bodyBytes)); //받은 정보를 json형태로 decode
-    CommentList commentList;
-    commentList = CommentList.fromJson(jsonResponse);
+    if (response.statusCode == 200) {
+      commentList = CommentList.fromJson(jsonResponse);
+    } else {
+      commentList = null;
+    }
 
     return commentList;
   }
@@ -244,6 +247,16 @@ class CommentList {
     return new CommentList(comments: commentsList);
   }
 }
+// class CommentList{
+//   List<userComment> comments;
+//   CommentList({
+//     required this.comments,
+//   });
+
+//   factory CommentList.fromJson(Map<String, dynamic> json) {
+//     this.comments = json['comments'].entries.map((e) => userComment.fromJson(e.value)).toList();
+//   }
+// }
 
 /**댓글 구성 요소 모델 */
 class userComment {

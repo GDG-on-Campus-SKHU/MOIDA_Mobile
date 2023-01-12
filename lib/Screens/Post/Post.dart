@@ -54,6 +54,7 @@ class _PostState extends State<Post> {
                   var userToken = storage.read(key: 'Token');
 
                   return Scaffold(
+                    resizeToAvoidBottomInset: false,
                     body: SafeArea(
                       child: Container(
                         alignment: Alignment.topCenter,
@@ -77,8 +78,11 @@ class _PostState extends State<Post> {
                                       child: Column(
                                         children: [
                                           Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
+                                                width: 250,
                                                 alignment: Alignment.topLeft,
                                                 padding:
                                                     const EdgeInsets.all(10.0),
@@ -87,48 +91,49 @@ class _PostState extends State<Post> {
                                                   style: Styles.postHeaderText,
                                                 ),
                                               ),
-                                              IconButton(
-                                                  onPressed: (() {
-                                                    if (userId == user) {
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: ((context) {
-                                                            return AlertDialog(
-                                                              title: Text(
-                                                                  '게시글을 삭제하시겠습니까?'),
-                                                              actions: [
-                                                                TextButton(
-                                                                    onPressed:
-                                                                        (() {
-                                                                      deletePost(
-                                                                          widget
-                                                                              .id);
-                                                                      listPost();
-                                                                      Navigator.push(
-                                                                          context,
-                                                                          MaterialPageRoute(
-                                                                              builder: ((context) => PostListPage())));
-                                                                    }),
-                                                                    child: Text(
-                                                                        '삭제')),
-                                                                TextButton(
-                                                                    onPressed:
-                                                                        (() {
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    }),
-                                                                    child: Text(
-                                                                        '취소'))
-                                                              ],
-                                                            );
-                                                          }));
-                                                    } else {
-                                                      FToast().showToast(
-                                                          child: Text(
-                                                              '사용자가 작성한 게시물이 아닙니다.'));
-                                                    }
-                                                  }),
-                                                  icon: Icon(Icons.delete))
+                                              Container(
+                                                child: IconButton(
+                                                    onPressed: (() {
+                                                      if (userId == user) {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                ((context) {
+                                                              return AlertDialog(
+                                                                title: Text(
+                                                                    '게시글을 삭제하시겠습니까?'),
+                                                                actions: [
+                                                                  TextButton(
+                                                                      onPressed:
+                                                                          (() {
+                                                                        deletePost(
+                                                                            widget.id);
+
+                                                                        Navigator.push(
+                                                                            context,
+                                                                            MaterialPageRoute(builder: ((context) => PostListPage())));
+                                                                      }),
+                                                                      child: Text(
+                                                                          '삭제')),
+                                                                  TextButton(
+                                                                      onPressed:
+                                                                          (() {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      }),
+                                                                      child: Text(
+                                                                          '취소'))
+                                                                ],
+                                                              );
+                                                            }));
+                                                      } else {
+                                                        FToast().showToast(
+                                                            child: Text(
+                                                                '사용자가 작성한 게시물이 아닙니다.'));
+                                                      }
+                                                    }),
+                                                    icon: Icon(Icons.delete)),
+                                              )
                                             ],
                                           ),
                                           Row(
@@ -176,77 +181,124 @@ class _PostState extends State<Post> {
                                         padding: const EdgeInsets.all(20.0),
                                         child: Text('$mainContext'),
                                       )),
-                                  Container(
-                                    //댓글 조회
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.9,
-                                    height: 500,
+                                  SingleChildScrollView(
+                                    child: Container(
+                                      //댓글 조회
+                                      width: MediaQuery.of(context).size.width *
+                                          0.9,
+                                      height: 500,
 
-                                    child: FutureBuilder(
-                                      future:
-                                          PostComment.commentRead(widget.id),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          return ListView.builder(
-                                              /**댓글 */
-                                              scrollDirection: Axis.vertical,
-                                              itemCount: snapshot.data! == null
-                                                  ? 0
-                                                  : snapshot
-                                                      .data!.comments.length,
-                                              itemBuilder: ((context, index) {
-                                                return Container(
-                                                  child: Column(
-                                                    children: [
-                                                      Card(
-                                                        elevation: 1,
-                                                        surfaceTintColor:
-                                                            Colors.white,
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceAround,
-                                                          children: [
-                                                            Container(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .all(10),
-                                                              alignment: Alignment
-                                                                  .centerLeft,
-                                                              child: Text(
-                                                                  '${snapshot.data!.comments[index].writer}'),
-                                                            ),
-                                                            Container(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .fromLTRB(
-                                                                          10,
-                                                                          10,
-                                                                          10,
-                                                                          0),
-                                                              alignment: Alignment
-                                                                  .centerLeft,
-                                                              child: Text(
-                                                                  '${snapshot.data!.comments[index].context}'),
-                                                            ),
-                                                            Container(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .fromLTRB(
-                                                                          10,
-                                                                          10,
-                                                                          10,
-                                                                          0),
-                                                              alignment: Alignment
-                                                                  .centerLeft,
-                                                              child: Text(
-                                                                  '${snapshot.data!.comments[index].createdDate.toString().substring(2).replaceAll('T', ' ')}'),
-                                                            ),
-                                                            Container(
-                                                                /**대댓글 작성 */
-                                                                alignment:
-                                                                    Alignment
-                                                                        .topRight,
+                                      child: FutureBuilder(
+                                        future:
+                                            PostComment.commentRead(widget.id),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            return ListView.builder(
+                                                /**댓글 */
+                                                scrollDirection: Axis.vertical,
+                                                itemCount:
+                                                    snapshot.data! == null
+                                                        ? 0
+                                                        : snapshot.data!
+                                                            .comments.length,
+                                                itemBuilder: ((context, index) {
+                                                  return Container(
+                                                    child: Card(
+                                                      elevation: 1,
+                                                      surfaceTintColor:
+                                                          Colors.white,
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceAround,
+                                                        children: [
+                                                          Container(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    10),
+                                                            alignment: Alignment
+                                                                .centerLeft,
+                                                            child: Text(
+                                                                '${snapshot.data!.comments[index].writer}'),
+                                                          ),
+                                                          Container(
+                                                            padding: EdgeInsets
+                                                                .fromLTRB(10,
+                                                                    10, 10, 0),
+                                                            alignment: Alignment
+                                                                .centerLeft,
+                                                            child: Text(
+                                                                '${snapshot.data!.comments[index].context}'),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .fromLTRB(
+                                                                        10,
+                                                                        0,
+                                                                        0,
+                                                                        10),
+                                                                child:
+                                                                    GestureDetector(
+                                                                        onTap:
+                                                                            (() {
+                                                                          showDialog(
+                                                                              context: context,
+                                                                              barrierDismissible: true,
+                                                                              builder: (BuildContext context) {
+                                                                                return AlertDialog(
+                                                                                    alignment: Alignment.center,
+                                                                                    content: Container(
+                                                                                      height: 450,
+                                                                                      child: SingleChildScrollView(
+                                                                                        child: Column(
+                                                                                          children: [
+                                                                                            replyContainer(widget.id, index),
+                                                                                            Container(
+                                                                                              height: 50,
+                                                                                              child: TextField(
+                                                                                                  controller: PostChildComment.childCommentController,
+                                                                                                  decoration: InputDecoration(
+                                                                                                    border: InputBorder.none,
+                                                                                                    suffixIcon: TextButton(
+                                                                                                        onPressed: (() {
+                                                                                                          PostChildComment.childCommentWrite(widget.id, snapshot.data!.comments[index].id);
+                                                                                                          Navigator.pop(context);
+                                                                                                          setState(() {
+                                                                                                            psModel = PostController.getUserPost(widget.id);
+                                                                                                          });
+                                                                                                        }),
+                                                                                                        child: Text('작성')),
+                                                                                                    hintText: '대댓글',
+                                                                                                    hintStyle: TextStyle(
+                                                                                                      color: Colors.black,
+                                                                                                    ),
+                                                                                                  )),
+                                                                                            )
+                                                                                          ],
+                                                                                        ),
+                                                                                      ),
+                                                                                    ));
+                                                                              });
+                                                                        }),
+                                                                        child: snapshot.data!.comments[index].childComments !=
+                                                                                null
+                                                                            ? Text('+ 답글 달기 [${snapshot.data!.comments[index].childComments!.length}]')
+                                                                            : Text('+ 답글 달기 [0]')
+                                                                        // Icon(
+                                                                        //     Icons
+                                                                        //         .abc),
+                                                                        ),
+                                                              ),
+                                                              Container(
                                                                 padding:
                                                                     EdgeInsets
                                                                         .fromLTRB(
@@ -254,147 +306,26 @@ class _PostState extends State<Post> {
                                                                             0,
                                                                             10,
                                                                             10),
-                                                                child:
-                                                                    IconButton(
-                                                                        onPressed:
-                                                                            (() {
-                                                                          showDialog(
-                                                                              context: context,
-                                                                              barrierDismissible: true,
-                                                                              builder: (BuildContext context) {
-                                                                                return AlertDialog(
-                                                                                  alignment: Alignment.center,
-                                                                                  title: Text("대댓글 작성"),
-                                                                                  content: Column(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: [
-                                                                                    TextField(
-                                                                                        controller: PostChildComment.childCommentController,
-                                                                                        decoration: InputDecoration(
-                                                                                          border: InputBorder.none,
-                                                                                          hintText: '대댓글',
-                                                                                          hintStyle: TextStyle(
-                                                                                            color: Colors.black,
-                                                                                          ),
-                                                                                        ))
-                                                                                  ]),
-                                                                                  actions: [
-                                                                                    TextButton(
-                                                                                        onPressed: (() {
-                                                                                          PostChildComment.childCommentWrite(widget.id, snapshot.data!.comments[index].id);
-                                                                                          Navigator.pop(context);
-                                                                                          setState(() {
-                                                                                            psModel = PostController.getUserPost(widget.id);
-                                                                                          });
-                                                                                        }),
-                                                                                        child: Text('대댓글 작성'))
-                                                                                  ],
-                                                                                );
-                                                                              });
-                                                                        }),
-                                                                        icon:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .message,
-                                                                          size:
-                                                                              20,
-                                                                        ))),
-                                                          ],
-                                                        ),
+                                                                alignment: Alignment
+                                                                    .centerLeft,
+                                                                child: Text(
+                                                                    '${snapshot.data!.comments[index].createdDate.toString().substring(2, 16).replaceAll('T', ' ')}'),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
                                                       ),
-                                                      Container(
-                                                        /**대댓글 위젯 */
-                                                        height: 200,
-                                                        child: FutureBuilder(
-                                                          future: PostComment
-                                                              .commentRead(
-                                                                  widget.id),
-                                                          builder: (context,
-                                                              snapshot) {
-                                                            if (snapshot
-                                                                .hasData) {
-                                                              return ListView
-                                                                  .builder(
-                                                                      itemCount: snapshot.data!.comments[index].childComments ==
-                                                                              null
-                                                                          ? 0
-                                                                          : snapshot
-                                                                              .data!
-                                                                              .comments[
-                                                                                  index]
-                                                                              .childComments!
-                                                                              .length,
-                                                                      itemBuilder:
-                                                                          ((context,
-                                                                              ind) {
-                                                                        return Container(
-                                                                          width:
-                                                                              MediaQuery.of(context).size.width * 0.9,
-                                                                          child:
-                                                                              Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.start,
-                                                                            children: [
-                                                                              SizedBox(
-                                                                                  width: 30,
-                                                                                  child: Transform.scale(
-                                                                                    scaleX: -1,
-                                                                                    child: Icon(
-                                                                                      Icons.arrow_back_sharp,
-                                                                                      size: 30,
-                                                                                    ),
-                                                                                  )),
-                                                                              Container(
-                                                                                width: MediaQuery.of(context).size.width * 0.9 - 40,
-                                                                                child: Card(
-                                                                                  child: Column(
-                                                                                    children: [
-                                                                                      Container(
-                                                                                        alignment: Alignment.topLeft,
-                                                                                        padding: EdgeInsets.all(10),
-                                                                                        child: Text(
-                                                                                          '${snapshot.data!.comments[index].childComments![ind].writer}',
-                                                                                        ),
-                                                                                      ),
-                                                                                      Container(
-                                                                                        alignment: Alignment.topLeft,
-                                                                                        padding: EdgeInsets.all(10),
-                                                                                        child: Text(
-                                                                                          '${snapshot.data!.comments[index].childComments![ind].context}',
-                                                                                        ),
-                                                                                      ),
-                                                                                      Container(
-                                                                                        alignment: Alignment.topLeft,
-                                                                                        padding: EdgeInsets.all(10),
-                                                                                        child: Text(
-                                                                                          '${snapshot.data!.comments[index].childComments![ind].modifiedDate.toString().substring(2).replaceAll('T', ' ')}',
-                                                                                        ),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        );
-                                                                      }));
-                                                            } else {
-                                                              return Center(
-                                                                child:
-                                                                    CircularProgressIndicator(),
-                                                              );
-                                                            }
-                                                          },
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                );
-                                              }));
-                                        } else {
-                                          return Center(
-                                            child: CircularProgressIndicator(),
-                                          );
-                                        }
-                                      },
+                                                    ),
+                                                  );
+                                                }));
+                                          } else {
+                                            return Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          }
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ]),
@@ -472,3 +403,169 @@ class _PostState extends State<Post> {
     );
   }
 }
+
+/**대댓글 위젯 */
+Widget replyContainer(postId, commentIndex) {
+  return Container(
+    alignment: Alignment.topLeft,
+    width: 200,
+    /**대댓글 위젯 */
+    height: 400,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        FutureBuilder(
+          future: PostComment.commentRead(postId),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Container(
+                width: 200,
+                height: 350,
+                child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount:
+                        snapshot.data!.comments[commentIndex].childComments ==
+                                null
+                            ? 0
+                            : snapshot.data!.comments[commentIndex]
+                                .childComments!.length,
+                    itemBuilder: ((context, ind) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 200,
+                              child: Card(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.topLeft,
+                                      padding: EdgeInsets.all(10),
+                                      child: Text(
+                                        '${snapshot.data!.comments[commentIndex].childComments![ind].writer}',
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.topLeft,
+                                      padding: EdgeInsets.all(10),
+                                      child: Text(
+                                        '${snapshot.data!.comments[commentIndex].childComments![ind].context}',
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.topLeft,
+                                      padding: EdgeInsets.all(10),
+                                      child: Text(
+                                        '${snapshot.data!.comments[commentIndex].childComments![ind].modifiedDate.toString().substring(2).replaceAll('T', ' ')}',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    })),
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+      ],
+    ),
+  );
+}
+
+
+// 
+// Container(
+//                                                         /**대댓글 위젯 */
+//                                                         height: 200,
+//                                                         child: FutureBuilder(
+//                                                           future: PostComment
+//                                                               .commentRead(
+//                                                                   widget.id),
+//                                                           builder: (context,
+//                                                               snapshot) {
+//                                                             if (snapshot
+//                                                                 .hasData) {
+//                                                               return ListView
+//                                                                   .builder(
+//                                                                       itemCount: snapshot.data!.comments[index].childComments ==
+//                                                                               null
+//                                                                           ? 0
+//                                                                           : snapshot
+//                                                                               .data!
+//                                                                               .comments[
+//                                                                                   index]
+//                                                                               .childComments!
+//                                                                               .length,
+//                                                                       itemBuilder:
+//                                                                           ((context,
+//                                                                               ind) {
+//                                                                         return Container(
+//                                                                           width:
+//                                                                               MediaQuery.of(context).size.width * 0.9,
+//                                                                           child:
+//                                                                               Row(
+//                                                                             mainAxisAlignment:
+//                                                                                 MainAxisAlignment.start,
+//                                                                             children: [
+//                                                                               SizedBox(
+//                                                                                   width: 30,
+//                                                                                   child: Transform.scale(
+//                                                                                     scaleX: -1,
+//                                                                                     child: Icon(
+//                                                                                       Icons.arrow_back_sharp,
+//                                                                                       size: 30,
+//                                                                                     ),
+//                                                                                   )),
+//                                                                               Container(
+//                                                                                 width: MediaQuery.of(context).size.width * 0.9 - 40,
+//                                                                                 child: Card(
+//                                                                                   child: Column(
+//                                                                                     children: [
+//                                                                                       Container(
+//                                                                                         alignment: Alignment.topLeft,
+//                                                                                         padding: EdgeInsets.all(10),
+//                                                                                         child: Text(
+//                                                                                           '${snapshot.data!.comments[index].childComments![ind].writer}',
+//                                                                                         ),
+//                                                                                       ),
+//                                                                                       Container(
+//                                                                                         alignment: Alignment.topLeft,
+//                                                                                         padding: EdgeInsets.all(10),
+//                                                                                         child: Text(
+//                                                                                           '${snapshot.data!.comments[index].childComments![ind].context}',
+//                                                                                         ),
+//                                                                                       ),
+//                                                                                       Container(
+//                                                                                         alignment: Alignment.topLeft,
+//                                                                                         padding: EdgeInsets.all(10),
+//                                                                                         child: Text(
+//                                                                                           '${snapshot.data!.comments[index].childComments![ind].modifiedDate.toString().substring(2).replaceAll('T', ' ')}',
+//                                                                                         ),
+//                                                                                       ),
+//                                                                                     ],
+//                                                                                   ),
+//                                                                                 ),
+//                                                                               ),
+//                                                                             ],
+//                                                                           ),
+//                                                                         );
+//                                                                       }));
+//                                                             } else {
+//                                                               return Center(
+//                                                                 child:
+//                                                                     CircularProgressIndicator(),
+//                                                               );
+//                                                             }
+//                                                           },
+//                                                         ),
+//                                                       )

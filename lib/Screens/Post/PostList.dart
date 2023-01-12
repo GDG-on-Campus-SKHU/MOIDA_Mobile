@@ -7,7 +7,7 @@ import 'package:moida_mobile/Screens/Post/Post.dart';
 import 'package:moida_mobile/Screens/Post/WritePost.dart';
 import '../../Controller/postController.dart';
 import '../../Styles/ColorStyles.dart';
-import 'TypePost.dart';
+import 'TypePostListPage.dart';
 
 class PostListPage extends StatefulWidget {
   const PostListPage({super.key});
@@ -64,9 +64,30 @@ class _PostListPageState extends State<PostListPage> {
                         alignment: Alignment.bottomCenter,
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: 150,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                          child: Text('지금 바로 참가할 수 있는 모임들'),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              child: Text('지금 바로 참가할 수 있는 모임들'),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                              child: GestureDetector(
+                                child: Text(
+                                  '카테고리별 보기',
+                                  style: TextStyle(color: Colors.blue),
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: ((context) =>
+                                              TypePostListPage())));
+                                },
+                              ),
+                            ),
+                          ],
                         )),
                     Container(
                         alignment: Alignment.bottomCenter,

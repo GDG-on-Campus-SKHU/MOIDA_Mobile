@@ -4,14 +4,14 @@ import 'package:flutter/src/widgets/framework.dart';
 
 import '../../Controller/postController.dart';
 
-class TypePost extends StatefulWidget {
-  const TypePost({super.key});
+class TypePostListPage extends StatefulWidget {
+  const TypePostListPage({super.key});
 
   @override
-  State<TypePost> createState() => _TypePostState();
+  State<TypePostListPage> createState() => _TypePostListPageState();
 }
 
-class _TypePostState extends State<TypePost> {
+class _TypePostListPageState extends State<TypePostListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
