@@ -5,6 +5,8 @@ class Styles {
   //MARK: -itemName
   static TextStyle loginBoxText = const TextStyle(
       color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600);
+  static TextStyle tabBarText = const TextStyle(
+      color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600);
   static TextStyle typeBoxText = const TextStyle(
       color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600);
   static TextStyle postHeaderText =

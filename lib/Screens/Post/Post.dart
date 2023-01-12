@@ -30,6 +30,8 @@ class _PostState extends State<Post> {
     super.initState();
     psModel = PostController.getUserPost(widget.id);
     getUserId();
+    // PostComment.commentController.clear();
+    // modifyCommentsClass.modyCommentsController.clear();
     // fToast = FToast();
     // fToast!.init(context);
   }
@@ -41,7 +43,7 @@ class _PostState extends State<Post> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           var userId = snapshot.data!.username;
-          print('id $userId');
+
           return Container(
             height: double.infinity,
             child: FutureBuilder(
@@ -52,6 +54,7 @@ class _PostState extends State<Post> {
                   var type = snapshot.data!.type;
                   var mainContext = snapshot.data!.context;
                   var user = snapshot.data!.author;
+
                   var userToken = storage.read(key: 'Token');
 
                   return Scaffold(
@@ -83,7 +86,7 @@ class _PostState extends State<Post> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
-                                                width: 230,
+                                                width: 250,
                                                 alignment: Alignment.topLeft,
                                                 padding:
                                                     const EdgeInsets.all(10.0),
@@ -94,7 +97,7 @@ class _PostState extends State<Post> {
                                               ),
                                               Container(
                                                 child: userId == user
-                                                    ? Row(
+                                                    ? Column(
                                                         children: [
                                                           IconButton(
                                                               onPressed: (() {
@@ -127,7 +130,10 @@ class _PostState extends State<Post> {
                                                                     }));
                                                               }),
                                                               icon: Icon(
-                                                                  Icons.edit)),
+                                                                Icons.edit,
+                                                                color: ColorStyle
+                                                                    .mainColor,
+                                                              )),
                                                           IconButton(
                                                               onPressed: (() {
                                                                 showDialog(
@@ -155,8 +161,11 @@ class _PostState extends State<Post> {
                                                                       );
                                                                     }));
                                                               }),
-                                                              icon: Icon(Icons
-                                                                  .delete)),
+                                                              icon: Icon(
+                                                                Icons.delete,
+                                                                color: ColorStyle
+                                                                    .mainColor,
+                                                              )),
                                                         ],
                                                       )
                                                     : SizedBox(),
@@ -168,8 +177,8 @@ class _PostState extends State<Post> {
                                               Container(
                                                 padding: EdgeInsets.all(10),
                                                 child: Container(
+                                                    width: 65,
                                                     alignment: Alignment.center,
-                                                    width: 50,
                                                     height: 25,
                                                     decoration: BoxDecoration(
                                                         borderRadius:
@@ -245,13 +254,108 @@ class _PostState extends State<Post> {
                                                                     10),
                                                             alignment: Alignment
                                                                 .centerLeft,
-                                                            child: Text(
-                                                                '${snapshot.data!.comments[index].writer}'),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                /**댓글 수정 버튼 */
+                                                                Text(
+                                                                    '${snapshot.data!.comments[index].writer}'),
+                                                                userId ==
+                                                                        snapshot
+                                                                            .data!
+                                                                            .comments[index]
+                                                                            .writer
+                                                                    ? Row(
+                                                                        children: [
+                                                                          IconButton(
+                                                                              onPressed: () {
+                                                                                modifyCommentsClass.modyCommentsController.clear();
+                                                                                showDialog(
+                                                                                    context: context,
+                                                                                    barrierDismissible: true,
+                                                                                    builder: (BuildContext context) {
+                                                                                      return AlertDialog(
+                                                                                          title: Text('댓글수정'),
+                                                                                          alignment: Alignment.center,
+                                                                                          content: Container(
+                                                                                            height: 100,
+                                                                                            child: SingleChildScrollView(
+                                                                                              child: Container(
+                                                                                                height: 50,
+                                                                                                child: TextField(
+                                                                                                    controller: modifyCommentsClass.modyCommentsController,
+                                                                                                    decoration: InputDecoration(
+                                                                                                      border: InputBorder.none,
+                                                                                                      suffixIcon: TextButton(
+                                                                                                          onPressed: (() {
+                                                                                                            modifyCommentsClass.modifyComments(widget.id, snapshot.data!.comments[index].id);
+
+                                                                                                            Navigator.pop(context);
+                                                                                                            setState(() {
+                                                                                                              psModel = PostController.getUserPost(widget.id);
+                                                                                                            });
+                                                                                                          }),
+                                                                                                          child: Text('수정')),
+                                                                                                      hintText: '${snapshot.data!.comments[index].context}',
+                                                                                                      hintStyle: TextStyle(
+                                                                                                        color: Colors.black,
+                                                                                                      ),
+                                                                                                    )),
+                                                                                              ),
+                                                                                            ),
+                                                                                          ));
+                                                                                    });
+                                                                              },
+                                                                              icon: Icon(
+                                                                                Icons.edit,
+                                                                                size: 20,
+                                                                                color: ColorStyle.mainColor,
+                                                                              )),
+                                                                          IconButton(
+                                                                              onPressed: (() {
+                                                                                showDialog(
+                                                                                    context: context,
+                                                                                    barrierDismissible: true,
+                                                                                    builder: (BuildContext context) {
+                                                                                      return AlertDialog(
+                                                                                        alignment: Alignment.center,
+                                                                                        content: Container(height: 50, alignment: Alignment.center, child: Text('댓글을 삭제하시겠습니까?')),
+                                                                                        actions: [
+                                                                                          TextButton(
+                                                                                              onPressed: (() {
+                                                                                                deleteComments(widget.id, snapshot.data!.comments[index].id);
+                                                                                                Navigator.pop(context);
+                                                                                                setState(() {
+                                                                                                  psModel = PostController.getUserPost(widget.id);
+                                                                                                });
+                                                                                              }),
+                                                                                              child: Text('삭제')),
+                                                                                          TextButton(
+                                                                                              onPressed: (() {
+                                                                                                Navigator.pop(context);
+                                                                                              }),
+                                                                                              child: Text('취소')),
+                                                                                        ],
+                                                                                      );
+                                                                                    });
+                                                                              }),
+                                                                              icon: Icon(
+                                                                                Icons.delete,
+                                                                                size: 20,
+                                                                                color: ColorStyle.mainColor,
+                                                                              ))
+                                                                        ],
+                                                                      )
+                                                                    : SizedBox()
+                                                              ],
+                                                            ),
                                                           ),
                                                           Container(
                                                             padding: EdgeInsets
-                                                                .fromLTRB(10,
-                                                                    10, 10, 0),
+                                                                .fromLTRB(10, 0,
+                                                                    10, 10),
                                                             alignment: Alignment
                                                                 .centerLeft,
                                                             child: Text(
@@ -273,57 +377,59 @@ class _PostState extends State<Post> {
                                                                         0,
                                                                         0,
                                                                         10),
-                                                                child:
-                                                                    GestureDetector(
-                                                                        onTap:
-                                                                            (() {
-                                                                          showDialog(
-                                                                              context: context,
-                                                                              barrierDismissible: true,
-                                                                              builder: (BuildContext context) {
-                                                                                return AlertDialog(
-                                                                                    alignment: Alignment.center,
-                                                                                    content: Container(
-                                                                                      height: 450,
-                                                                                      child: SingleChildScrollView(
-                                                                                        child: Column(
-                                                                                          children: [
-                                                                                            replyContainer(widget.id, index),
-                                                                                            Container(
-                                                                                              height: 50,
-                                                                                              child: TextField(
-                                                                                                  controller: PostChildComment.childCommentController,
-                                                                                                  decoration: InputDecoration(
-                                                                                                    border: InputBorder.none,
-                                                                                                    suffixIcon: TextButton(
-                                                                                                        onPressed: (() {
-                                                                                                          PostChildComment.childCommentWrite(widget.id, snapshot.data!.comments[index].id);
-                                                                                                          Navigator.pop(context);
-                                                                                                          setState(() {
-                                                                                                            psModel = PostController.getUserPost(widget.id);
-                                                                                                          });
-                                                                                                        }),
-                                                                                                        child: Text('작성')),
-                                                                                                    hintText: '대댓글',
-                                                                                                    hintStyle: TextStyle(
-                                                                                                      color: Colors.black,
-                                                                                                    ),
-                                                                                                  )),
-                                                                                            )
-                                                                                          ],
-                                                                                        ),
-                                                                                      ),
-                                                                                    ));
-                                                                              });
-                                                                        }),
-                                                                        child: snapshot.data!.comments[index].childComments !=
-                                                                                null
-                                                                            ? Text('+ 답글 달기 [${snapshot.data!.comments[index].childComments!.length}]')
-                                                                            : Text('+ 답글 달기 [0]')
-                                                                        // Icon(
-                                                                        //     Icons
-                                                                        //         .abc),
-                                                                        ),
+                                                                child: GestureDetector(
+                                                                    onTap: (() {
+                                                                      showDialog(
+                                                                          context:
+                                                                              context,
+                                                                          barrierDismissible:
+                                                                              true,
+                                                                          builder:
+                                                                              (BuildContext context) {
+                                                                            return AlertDialog(
+                                                                                alignment: Alignment.center,
+                                                                                content: Container(
+                                                                                  height: 450,
+                                                                                  child: SingleChildScrollView(
+                                                                                    child: Column(
+                                                                                      children: [
+                                                                                        replyContainer(widget.id, index),
+                                                                                        Container(
+                                                                                          height: 50,
+                                                                                          child: TextField(
+                                                                                              controller: PostChildComment.childCommentController,
+                                                                                              decoration: InputDecoration(
+                                                                                                border: InputBorder.none,
+                                                                                                suffixIcon: TextButton(
+                                                                                                    onPressed: (() {
+                                                                                                      PostChildComment.childCommentWrite(widget.id, snapshot.data!.comments[index].id);
+                                                                                                      Navigator.pop(context);
+                                                                                                      setState(() {
+                                                                                                        psModel = PostController.getUserPost(widget.id);
+                                                                                                      });
+                                                                                                    }),
+                                                                                                    child: Text('작성')),
+                                                                                                hintText: '대댓글',
+                                                                                                hintStyle: TextStyle(
+                                                                                                  color: Colors.black,
+                                                                                                ),
+                                                                                              )),
+                                                                                        )
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ));
+                                                                          });
+                                                                    }),
+                                                                    child: snapshot.data!.comments[index].childComments != null
+                                                                        ? Text(
+                                                                            '+ 답글 달기 [${snapshot.data!.comments[index].childComments!.length}]',
+                                                                          )
+                                                                        : Text('+ 답글 달기 [0]')
+                                                                    // Icon(
+                                                                    //     Icons
+                                                                    //         .abc),
+                                                                    ),
                                                               ),
                                                               Container(
                                                                 padding:
@@ -391,6 +497,7 @@ class _PostState extends State<Post> {
                                       onPressed: (() {
                                         PostComment.commentWrite(widget.id);
                                         Navigator.pop(context);
+
                                         setState(() {
                                           psModel = PostController.getUserPost(
                                               widget.id);
@@ -400,6 +507,7 @@ class _PostState extends State<Post> {
                                 ],
                               );
                             });
+                        PostComment.commentController.clear();
                       },
                     ),
                   );

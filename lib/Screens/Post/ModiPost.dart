@@ -50,7 +50,7 @@ class _ModiPostState extends State<ModiPost> {
                               border: InputBorder.none,
                               hintText: '${snapshot.data!.title}',
                               hintStyle: TextStyle(
-                                color: Colors.black,
+                                color: ColorStyle.mainColor,
                               ),
                             ),
                           ),
@@ -77,7 +77,7 @@ class _ModiPostState extends State<ModiPost> {
                               border: InputBorder.none,
                               hintText: '${snapshot.data!.type}',
                               hintStyle: TextStyle(
-                                color: Colors.black,
+                                color: ColorStyle.mainColor,
                               ),
                             ),
                           ),
@@ -105,7 +105,7 @@ class _ModiPostState extends State<ModiPost> {
                               border: InputBorder.none,
                               hintText: '${snapshot.data!.context}',
                               hintStyle: TextStyle(
-                                color: Colors.black,
+                                color: ColorStyle.mainColor,
                               ),
                             ),
                           ),

@@ -184,6 +184,7 @@ class MyPageData {
   String? username;
   String? nickname;
   Posts? posts;
+  Posts? comments;
 
   MyPageData({this.username, this.nickname, this.posts});
 
@@ -191,6 +192,8 @@ class MyPageData {
     username = json['username'];
     nickname = json['nickname'];
     posts = json['posts'] != null ? new Posts.fromJson(json['posts']) : null;
+    comments =
+        json['comments'] != null ? new Posts.fromJson(json['comments']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -199,6 +202,9 @@ class MyPageData {
     data['nickname'] = this.nickname;
     if (this.posts != null) {
       data['posts'] = this.posts!.toJson();
+    }
+    if (this.comments != null) {
+      data['comments'] = this.comments!.toJson();
     }
     return data;
   }

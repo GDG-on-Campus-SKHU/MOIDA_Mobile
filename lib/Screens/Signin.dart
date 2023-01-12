@@ -65,7 +65,7 @@ class _SigninState extends State<Signin> {
                       border: InputBorder.none,
                       hintText: 'UserName',
                       hintStyle: TextStyle(
-                        color: Colors.black,
+                        color: ColorStyle.mainColor,
                       ),
                     ),
                   ),
@@ -92,7 +92,7 @@ class _SigninState extends State<Signin> {
                       border: InputBorder.none,
                       hintText: 'Password',
                       hintStyle: TextStyle(
-                        color: Colors.black,
+                        color: ColorStyle.mainColor,
                       ),
                     ),
                   ),
@@ -119,7 +119,7 @@ class _SigninState extends State<Signin> {
                       border: InputBorder.none,
                       hintText: 'repeatedPassword',
                       hintStyle: TextStyle(
-                        color: Colors.black,
+                        color: ColorStyle.mainColor,
                       ),
                     ),
                   ),
@@ -146,7 +146,7 @@ class _SigninState extends State<Signin> {
                       border: InputBorder.none,
                       hintText: 'NickName',
                       hintStyle: TextStyle(
-                        color: Colors.black,
+                        color: ColorStyle.mainColor,
                       ),
                     ),
                   ),

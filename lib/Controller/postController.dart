@@ -450,11 +450,11 @@ class ModiPostModel {
 /**게시글 수정 path */
 class modiPostController {
   static TextEditingController modyTitleController =
-      TextEditingController(); //titleController
+      TextEditingController(); //modyTitleController
   static TextEditingController modyTypeController =
-      TextEditingController(); //typeController
+      TextEditingController(); //modyTypeController
   static TextEditingController modyContextController =
-      TextEditingController(); //contextController
+      TextEditingController(); //modyContextController
   static Future modiPostPath(id, author) async {
     var url = 'http://moida-skhu.duckdns.org/post/edit/${id}';
 
@@ -478,4 +478,45 @@ class modiPostController {
       print(response.body);
     }
   }
+}
+
+/**댓글 수정 */
+class modifyCommentsClass {
+  static TextEditingController modyCommentsController =
+      TextEditingController(); //modyCommentsController
+  static Future modifyComments(postId, commentId) async {
+    var url =
+        'http://moida-skhu.duckdns.org/post/${postId}/comments/${commentId}';
+
+    String? token = await storage.read(key: 'Token');
+    ModiPostModel modiPostModel;
+
+    var response = await http.patch(Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer ${token}',
+          "Content-Type": "application/json",
+          'Charset': 'utf-8',
+        },
+        body: jsonEncode({"context": modyCommentsController.text}));
+
+    if (response.statusCode == 200) {
+      print(response.body);
+    } else {
+      print(response.body);
+    }
+  }
+}
+
+/**댓글 삭제 */
+Future<void> deleteComments(postId, commentId) async {
+  var url =
+      'http://moida-skhu.duckdns.org/post/${postId}/comments/${commentId}';
+
+  String? token = await storage.read(key: 'Token');
+
+  var response = await http.delete(
+    Uri.parse(url),
+    headers: {'Authorization': 'Bearer ${token}'},
+  );
+  print(response.body);
 }

@@ -24,25 +24,49 @@ class _TypePostListPageState extends State<TypePostListPage> {
               bottom: TabBar(
                 indicatorColor: Colors.purple,
                 tabs: [
-                  Container(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      '공부',
-                      style: Styles.postHeaderText,
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: 100,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: ColorStyle.mainColor,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Text(
+                        '공부',
+                        style: Styles.tabBarText,
+                      ),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      '혼밥',
-                      style: Styles.postHeaderText,
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: 100,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: ColorStyle.mainColor,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Text(
+                        '혼밥',
+                        style: Styles.tabBarText,
+                      ),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      '팀플',
-                      style: Styles.postHeaderText,
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50,
+                      width: 100,
+                      decoration: BoxDecoration(
+                          color: ColorStyle.mainColor,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Text(
+                        '팀플',
+                        style: Styles.tabBarText,
+                      ),
                     ),
                   ),
                 ],
