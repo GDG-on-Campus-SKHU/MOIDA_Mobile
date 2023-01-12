@@ -23,6 +23,9 @@ class _ModiPostState extends State<ModiPost> {
         future: modifyPost(widget.id),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            var cheapColor1 = ColorStyle.mainColor;
+            var cheapColor2 = ColorStyle.mainColor;
+            var cheapColor3 = ColorStyle.mainColor;
             return SafeArea(
                 child: SingleChildScrollView(
               child: Container(
@@ -71,15 +74,97 @@ class _ModiPostState extends State<ModiPost> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(10),
-                          child: TextField(
-                            controller: modiPostController.modyTypeController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: '${snapshot.data!.type}',
-                              hintStyle: TextStyle(
-                                color: ColorStyle.mainColor,
+                          // child: TextField(
+                          //   controller: modiPostController.modyTypeController,
+                          //   decoration: InputDecoration(
+                          //     border: InputBorder.none,
+                          //     hintText: '${snapshot.data!.type}',
+                          //     hintStyle: TextStyle(
+                          //       color: ColorStyle.mainColor,
+                          //     ),
+                          //   ),
+                          // ),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
+                                child: GestureDetector(
+                                  child: Container(
+                                    width: 65,
+                                    alignment: Alignment.center,
+                                    height: 35,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: cheapColor1),
+                                    child: Text(
+                                      'STUDY',
+                                      style: Styles.typeBoxText,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      modiPostController
+                                          .modyTypeController.text = 'STUDY';
+                                      cheapColor1 = ColorStyle.selectColor;
+                                      cheapColor2 = ColorStyle.mainColor;
+                                      cheapColor3 = ColorStyle.mainColor;
+                                    });
+                                  },
+                                ),
                               ),
-                            ),
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: GestureDetector(
+                                  child: Container(
+                                    width: 65,
+                                    alignment: Alignment.center,
+                                    height: 35,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: cheapColor2),
+                                    child: Text(
+                                      'MEAL',
+                                      style: Styles.typeBoxText,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      modiPostController
+                                          .modyTypeController.text = 'MEAL';
+                                      cheapColor1 = ColorStyle.mainColor;
+                                      cheapColor2 = ColorStyle.selectColor;
+                                      cheapColor3 = ColorStyle.mainColor;
+                                    });
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: GestureDetector(
+                                  child: Container(
+                                    width: 80,
+                                    alignment: Alignment.center,
+                                    height: 35,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: cheapColor3),
+                                    child: Text(
+                                      'PROJECT',
+                                      style: Styles.typeBoxText,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      modiPostController
+                                          .modyTypeController.text = 'PROJECT';
+                                      cheapColor1 = ColorStyle.mainColor;
+                                      cheapColor2 = ColorStyle.mainColor;
+                                      cheapColor3 = ColorStyle.selectColor;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

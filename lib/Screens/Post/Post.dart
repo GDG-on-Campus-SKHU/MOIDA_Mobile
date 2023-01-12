@@ -424,8 +424,14 @@ class _PostState extends State<Post> {
                                                                     child: snapshot.data!.comments[index].childComments != null
                                                                         ? Text(
                                                                             '+ 답글 달기 [${snapshot.data!.comments[index].childComments!.length}]',
+                                                                            style:
+                                                                                TextStyle(color: ColorStyle.mainColor),
                                                                           )
-                                                                        : Text('+ 답글 달기 [0]')
+                                                                        : Text(
+                                                                            '+ 답글 달기 [0]',
+                                                                            style:
+                                                                                TextStyle(color: ColorStyle.mainColor),
+                                                                          )
                                                                     // Icon(
                                                                     //     Icons
                                                                     //         .abc),
@@ -573,6 +579,8 @@ Widget replyContainer(postId, commentIndex) {
                             Container(
                               width: 200,
                               child: Card(
+                                elevation: 1,
+                                surfaceTintColor: Colors.white,
                                 child: Column(
                                   children: [
                                     Container(
