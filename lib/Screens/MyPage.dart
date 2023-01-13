@@ -63,13 +63,37 @@ class _MyPageState extends State<MyPage> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('아이디'),
-                              Text('${snapshot.data!.username}'),
+                              Container(
+                                width: 100,
+                                child: Text(
+                                  '아이디',
+                                  style: Styles.userPageHeaderText,
+                                ),
+                              ),
+                              Container(
+                                  width: 100,
+                                  alignment: Alignment.bottomRight,
+                                  child: Text(
+                                    '${snapshot.data!.username}',
+                                    style: TextStyle(fontSize: 18),
+                                  )),
                               SizedBox(
                                 height: 20,
                               ),
-                              Text('닉네임'),
-                              Text('${snapshot.data!.nickname}'),
+                              Container(
+                                width: 100,
+                                child: Text(
+                                  '닉네임',
+                                  style: Styles.userPageHeaderText,
+                                ),
+                              ),
+                              Container(
+                                  width: 100,
+                                  alignment: Alignment.bottomRight,
+                                  child: Text(
+                                    '${snapshot.data!.nickname}',
+                                    style: TextStyle(fontSize: 18),
+                                  )),
                             ],
                           )
                         ],
@@ -180,54 +204,48 @@ class _MyPageState extends State<MyPage> {
                                         return Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: GestureDetector(
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis.vertical,
-                                              child: Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.9,
-                                                height: 50,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
-                                                    border: Border.all(
-                                                        width: 1,
-                                                        color: ColorStyle
-                                                            .mainColor)),
-                                                child: Row(children: [
-                                                  Container(
-                                                      width: 50,
-                                                      padding:
-                                                          EdgeInsets.fromLTRB(
-                                                              10, 0, 10, 0),
-                                                      child: Text(typeStringKo(
-                                                          snapshot
-                                                              .data!
-                                                              .posts!
-                                                              .myContent![index]
-                                                              .type))),
-                                                  Container(
-                                                    width: 1,
-                                                    height: 15,
-                                                    color: ColorStyle.mainColor,
-                                                  ),
-                                                  Container(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      width: 200,
-                                                      child: Text(
-                                                          '${snapshot.data!.posts!.myContent![index].title}')),
-                                                  Padding(
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.9,
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  border: Border.all(
+                                                      width: 1,
+                                                      color: ColorStyle
+                                                          .mainColor)),
+                                              child: Row(children: [
+                                                Container(
+                                                    width: 50,
                                                     padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
+                                                        EdgeInsets.fromLTRB(
+                                                            10, 0, 10, 0),
+                                                    child: Text(typeStringKo(
+                                                        snapshot
+                                                            .data!
+                                                            .posts!
+                                                            .myContent![index]
+                                                            .type))),
+                                                Container(
+                                                  width: 1,
+                                                  height: 15,
+                                                  color: ColorStyle.mainColor,
+                                                ),
+                                                Container(
+                                                    alignment: Alignment.center,
+                                                    width: 200,
                                                     child: Text(
-                                                        '${snapshot.data!.posts!.myContent![index].modifiedDate.toString().substring(2, 16).replaceAll('T', ' ')}'),
-                                                  )
-                                                ]),
-                                              ),
+                                                        '${snapshot.data!.posts!.myContent![index].title}')),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      10.0),
+                                                  child: Text(
+                                                      '${snapshot.data!.posts!.myContent![index].modifiedDate.toString().substring(5, 16).replaceAll('T', '/')}'),
+                                                )
+                                              ]),
                                             ),
                                             onTap: () {
                                               Navigator.push(

@@ -54,6 +54,7 @@ class _PostState extends State<Post> {
                   var type = snapshot.data!.type;
                   var mainContext = snapshot.data!.context;
                   var user = snapshot.data!.author;
+                  var nickName = snapshot.data!.nickname;
 
                   var userToken = storage.read(key: 'Token');
 
@@ -173,13 +174,15 @@ class _PostState extends State<Post> {
                                             ],
                                           ),
                                           Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
                                                 padding: EdgeInsets.all(10),
                                                 child: Container(
-                                                    width: 65,
+                                                    width: 80,
                                                     alignment: Alignment.center,
-                                                    height: 25,
+                                                    height: 35,
                                                     decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
@@ -193,7 +196,7 @@ class _PostState extends State<Post> {
                                               ),
                                               Container(
                                                 padding: EdgeInsets.all(10),
-                                                child: Text('${user}'),
+                                                child: Text('${nickName}'),
                                               ),
                                             ],
                                           )
@@ -215,7 +218,10 @@ class _PostState extends State<Post> {
                                       ),
                                       child: Padding(
                                         padding: const EdgeInsets.all(20.0),
-                                        child: Text('$mainContext'),
+                                        child: Text(
+                                          '$mainContext',
+                                          style: Styles.postContextText,
+                                        ),
                                       )),
                                   SingleChildScrollView(
                                     child: Container(
@@ -261,7 +267,7 @@ class _PostState extends State<Post> {
                                                               children: [
                                                                 /**댓글 수정 버튼 */
                                                                 Text(
-                                                                    '${snapshot.data!.comments[index].writer}'),
+                                                                    '${snapshot.data!.comments[index].nickname}'),
                                                                 userId ==
                                                                         snapshot
                                                                             .data!
@@ -359,7 +365,8 @@ class _PostState extends State<Post> {
                                                             alignment: Alignment
                                                                 .centerLeft,
                                                             child: Text(
-                                                                '${snapshot.data!.comments[index].context}'),
+                                                              '${snapshot.data!.comments[index].context}',
+                                                            ),
                                                           ),
                                                           SizedBox(
                                                             height: 10,
@@ -509,7 +516,10 @@ class _PostState extends State<Post> {
                                               widget.id);
                                         });
                                       }),
-                                      child: Text('댓글 작성'))
+                                      child: Text(
+                                        '댓글 작성',
+                                        selectionColor: ColorStyle.mainColor,
+                                      ))
                                 ],
                               );
                             });
@@ -587,7 +597,7 @@ Widget replyContainer(postId, commentIndex) {
                                       alignment: Alignment.topLeft,
                                       padding: EdgeInsets.all(10),
                                       child: Text(
-                                        '${snapshot.data!.comments[commentIndex].childComments![ind].writer}',
+                                        '${snapshot.data!.comments[commentIndex].childComments![ind].nickname}',
                                       ),
                                     ),
                                     Container(

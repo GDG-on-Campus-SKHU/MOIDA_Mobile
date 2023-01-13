@@ -74,11 +74,11 @@ class PostController {
     print('게시글 상세 : ${response.body}');
     var data = json.decode(utf8.decode(response.bodyBytes));
     postModel = PostModel(
-      author: data['author'],
-      title: data['title'],
-      type: data['type'],
-      context: data['context'],
-    );
+        author: data['author'],
+        title: data['title'],
+        type: data['type'],
+        context: data['context'],
+        nickname: data['nickname']);
     return postModel;
   }
 }
@@ -89,17 +89,18 @@ class PostModel {
   final String type; //게시글 태그
   final String context; //게시글 내용
   final String author; //게시글 작성자
-  PostModel({
-    required this.title,
-    required this.type,
-    required this.context,
-    required this.author,
-  });
+  final String nickname; //작성자 닉네임
+  PostModel(
+      {required this.title,
+      required this.type,
+      required this.context,
+      required this.author,
+      required this.nickname});
 }
 
 /**게시글 리스트 */
-Future<PostList> listPost() async {
-  const url = 'http://moida-skhu.duckdns.org/post/list';
+Future<PostList> listPost(number) async {
+  var url = 'http://moida-skhu.duckdns.org/post/list/${number}';
 
   String? token = await storage.read(key: 'Token');
 
@@ -123,8 +124,9 @@ Future<PostList> listPost() async {
 class PostList {
   //게시물 리스트 모델 클래스
   List<Content>? content;
+  bool? last;
 
-  PostList({this.content});
+  PostList({this.content, this.last});
 
   PostList.fromJson(Map<String, dynamic> json) {
     if (json['content'] != null) {
@@ -133,6 +135,7 @@ class PostList {
         content!.add(new Content.fromJson(v));
       });
     }
+    last = json['last'];
   }
 
   Map<String, dynamic> toJson() {
@@ -140,6 +143,7 @@ class PostList {
     if (this.content != null) {
       data['postList'] = this.content!.map((v) => v.toJson()).toList();
     }
+    data['last'] = this.last;
     return data;
   }
 }
@@ -150,9 +154,18 @@ class Content {
   String? type;
   String? context;
   String? createdDate;
+  String? nickname;
+
   late int id;
 
-  Content({this.author, this.title, this.type, this.context, this.createdDate});
+  Content({
+    this.author,
+    this.title,
+    this.type,
+    this.context,
+    this.createdDate,
+    this.nickname,
+  });
   Content.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     author = json['author'];
@@ -160,6 +173,7 @@ class Content {
     type = json['type'];
     context = json['context'];
     createdDate = json['createdDate'];
+    nickname = json['nickname'];
   }
 
   Map<String, dynamic> toJson() {
@@ -170,6 +184,8 @@ class Content {
     data['type'] = this.type;
     data['context'] = this.context;
     data['createdDate'] = this.createdDate;
+    data['nickname'] = this.nickname;
+
     return data;
   }
 }
@@ -262,17 +278,20 @@ class CommentList {
 class userComment {
   String? writer;
   String? context;
+  String? nickname;
   int? id;
   List<ChildComments>? childComments;
   String? createdDate;
 
-  userComment({this.writer, this.context, this.id, this.childComments});
+  userComment(
+      {this.writer, this.context, this.id, this.childComments, this.nickname});
   // factory userComment.fromJson(Map<String, dynamic> json) {
   //   return new userComment(
   //       writer: json['writer'], context: json['context'], id: json['id']);
   // }
   userComment.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    nickname = json['nickname'];
 
     writer = json['writer'];
     context = json['context'];
@@ -307,6 +326,7 @@ class ChildComments {
   int? postId;
   String? writer;
   String? context;
+  String? nickname;
   int? parentCommentId;
 
   String? createdDate;
@@ -319,7 +339,8 @@ class ChildComments {
       this.context,
       this.parentCommentId,
       this.createdDate,
-      this.modifiedDate});
+      this.modifiedDate,
+      this.nickname});
 
   ChildComments.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -327,6 +348,7 @@ class ChildComments {
     writer = json['writer'];
     context = json['context'];
     parentCommentId = json['parentCommentId'];
+    nickname = json['nickname'];
 
     createdDate = json['createdDate'];
     modifiedDate = json['modifiedDate'];
@@ -339,7 +361,7 @@ class ChildComments {
     data['writer'] = this.writer;
     data['context'] = this.context;
     data['parentCommentId'] = this.parentCommentId;
-
+    data['nickname'] = this.nickname;
     data['createdDate'] = this.createdDate;
     data['modifiedDate'] = this.modifiedDate;
     return data;
@@ -377,8 +399,8 @@ class PostChildComment {
 }
 
 /**게시글 타입 별 */
-Future<PostList> listTypePost(ctg) async {
-  var url = 'http://moida-skhu.duckdns.org/post/type/${ctg}';
+Future<PostList> listTypePost(ctg, postNum) async {
+  var url = 'http://moida-skhu.duckdns.org/post/type/${ctg}/${postNum}';
 
   String? token = await storage.read(key: 'Token');
 
@@ -447,7 +469,6 @@ class ModiPostModel {
       required this.modifiedDate});
 }
 
-/**게시글 수정 path */
 class modiPostController {
   static TextEditingController modyTitleController =
       TextEditingController(); //modyTitleController

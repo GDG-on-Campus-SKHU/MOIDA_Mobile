@@ -11,4 +11,14 @@ class Styles {
       color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600);
   static TextStyle postHeaderText =
       TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold);
+  static TextStyle postContextText = TextStyle(
+    color: Colors.black,
+    fontSize: 15,
+  );
+  static TextStyle postWriterText = TextStyle(
+    color: Colors.black,
+    fontSize: 15,
+  );
+  static TextStyle userPageHeaderText = TextStyle(
+      color: ColorStyle.mainColor, fontSize: 20, fontWeight: FontWeight.w600);
 }

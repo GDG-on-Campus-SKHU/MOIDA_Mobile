@@ -29,7 +29,7 @@ class _WritePostState extends State<WritePost> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(5.0),
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.9,
                   height: 80,
@@ -72,12 +72,12 @@ class _WritePostState extends State<WritePost> {
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 5, 5),
                       child: GestureDetector(
                         child: Container(
-                          width: 65,
+                          width: 80,
                           alignment: Alignment.center,
-                          height: 35,
+                          height: 45,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               color: cheapColor1),
@@ -97,12 +97,12 @@ class _WritePostState extends State<WritePost> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(5.0),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 5, 5),
                       child: GestureDetector(
                         child: Container(
-                          width: 65,
+                          width: 80,
                           alignment: Alignment.center,
-                          height: 35,
+                          height: 45,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               color: cheapColor2),
@@ -122,12 +122,12 @@ class _WritePostState extends State<WritePost> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(5.0),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 5, 5),
                       child: GestureDetector(
                         child: Container(
                           width: 80,
                           alignment: Alignment.center,
-                          height: 35,
+                          height: 45,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               color: cheapColor3),
@@ -150,7 +150,7 @@ class _WritePostState extends State<WritePost> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.9,
                   height: 400,
@@ -176,27 +176,30 @@ class _WritePostState extends State<WritePost> {
                   ),
                 ),
               ),
-              GestureDetector(
-                child: Container(
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  height: 80,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: ColorStyle.mainColor),
-                  child: Text(
-                    "작성하기",
-                    style: Styles.loginBoxText,
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: GestureDetector(
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: 80,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: ColorStyle.mainColor),
+                    child: Text(
+                      "작성하기",
+                      style: Styles.loginBoxText,
+                    ),
                   ),
-                ),
-                onTap: () {
-                  writePostController.postWrite();
+                  onTap: () {
+                    writePostController.postWrite();
 
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => PostListPage())));
-                },
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => PostListPage())));
+                  },
+                ),
               )
             ],
           ),

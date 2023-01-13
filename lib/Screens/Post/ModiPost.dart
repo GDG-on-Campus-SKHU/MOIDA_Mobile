@@ -213,7 +213,7 @@ class _ModiPostState extends State<ModiPost> {
                       onTap: () {
                         modiPostController.modiPostPath(
                             widget.id, snapshot.data!.author);
-                        listPost();
+                        listPost(0);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
